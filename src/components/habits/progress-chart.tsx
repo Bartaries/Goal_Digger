@@ -41,18 +41,20 @@ export function ProgressChart({ habits }: ProgressChartProps) {
       const originalName = habit.name;
       let displayName = originalName;
 
-      // General truncation for names longer than 20 chars
       const DESKTOP_TRUNCATE_THRESHOLD = 20;
       const DESKTOP_TRUNCATE_LENGTH = 17;
-      if (originalName.length > DESKTOP_TRUNCATE_THRESHOLD) {
-          displayName = originalName.substring(0, DESKTOP_TRUNCATE_LENGTH) + "...";
-      }
+      const MOBILE_FIRST_LAST_THRESHOLD = 4; // If name length is greater than this on mobile, format as F..L
 
-      // Mobile-specific override: if mobile and original name is "long enough" (e.g. > 8), use first letter.
-      // This overrides the general truncation if it applied.
-      const MOBILE_FIRST_LETTER_THRESHOLD = 8;
-      if (isMobile && originalName.length > MOBILE_FIRST_LETTER_THRESHOLD) {
-          displayName = originalName.charAt(0).toUpperCase() + ".";
+      if (isMobile) {
+        if (originalName.length > MOBILE_FIRST_LAST_THRESHOLD) {
+          displayName = `${originalName.charAt(0).toUpperCase()}..${originalName.charAt(originalName.length - 1)}`;
+        }
+        // If on mobile and name is short (<= MOBILE_FIRST_LAST_THRESHOLD), displayName remains originalName (e.g., "Gym")
+      } else { // Not mobile
+        if (originalName.length > DESKTOP_TRUNCATE_THRESHOLD) {
+          displayName = originalName.substring(0, DESKTOP_TRUNCATE_LENGTH) + "...";
+        }
+        // If not mobile and name is not > DESKTOP_TRUNCATE_THRESHOLD, displayName remains originalName
       }
       
       return {
@@ -116,3 +118,4 @@ export function ProgressChart({ habits }: ProgressChartProps) {
     </ShadcnChartContainer>
   );
 }
+
