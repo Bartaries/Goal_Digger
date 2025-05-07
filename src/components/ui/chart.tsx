@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -29,13 +28,13 @@ function useChart() {
   const context = React.useContext(ChartContext)
 
   if (!context) {
-    throw new Error("useChart must be used within a <ChartContainer />")
+    throw new Error("useChart must be used within a <ShadcnChartContainer />")
   }
 
   return context
 }
 
-const ChartContainer = React.forwardRef<
+const ShadcnChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     config: ChartConfig
@@ -66,7 +65,7 @@ const ChartContainer = React.forwardRef<
     </ChartContext.Provider>
   )
 })
-ChartContainer.displayName = "ChartContainer" // Ensuring displayName matches component name
+ShadcnChartContainer.displayName = "ShadcnChartContainer"
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
@@ -255,7 +254,7 @@ const ChartTooltipContent = React.forwardRef<
     )
   }
 )
-ChartTooltipContent.displayName = "ChartTooltipContent" // Changed from "ChartTooltip" for consistency
+ChartTooltipContent.displayName = "ChartTooltipContent"
 
 const ChartLegend = RechartsPrimitive.Legend
 
@@ -315,7 +314,7 @@ const ChartLegendContent = React.forwardRef<
     )
   }
 )
-ChartLegendContent.displayName = "ChartLegendContent" // Changed from "ChartLegend"
+ChartLegendContent.displayName = "ChartLegendContent"
 
 // Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
@@ -357,7 +356,7 @@ function getPayloadConfigFromPayload(
 }
 
 export {
-  ChartContainer,
+  ShadcnChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,

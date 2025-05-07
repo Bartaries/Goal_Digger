@@ -1,27 +1,25 @@
 import type { HabitFrequency } from '@/types/habit';
 
-export function getPolishDayForm(days: number): string {
+export function getDaySuffix(days: number): string {
   if (days === 1) {
-    return "dzień";
+    return "day";
   }
-  // For UI simplicity, "dni" covers 0, 2,3,4 and 5+ and other complex cases
-  return "dni";
+  return "days";
 }
 
 export function translateFrequency(frequency: HabitFrequency, capitalize = true): string {
   let translated: string;
   switch (frequency) {
     case 'daily':
-      translated = 'codziennie';
+      translated = 'daily';
       break;
     case 'weekly':
-      translated = 'tygodniowo';
+      translated = 'weekly';
       break;
     case 'monthly':
-      translated = 'miesięcznie';
+      translated = 'monthly';
       break;
     default:
-      // This case should ideally not be reached if HabitFrequency is strictly typed
       translated = frequency;
   }
   return capitalize ? translated.charAt(0).toUpperCase() + translated.slice(1) : translated;

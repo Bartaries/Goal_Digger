@@ -8,7 +8,7 @@ import { CheckCircle, Circle, Flame, Trash2, Zap, Repeat } from 'lucide-react';
 import { getTodayDateString } from '@/lib/date-utils';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { getPolishDayForm, translateFrequency } from '@/lib/i18n-utils';
+import { getDaySuffix, translateFrequency } from '@/lib/i18n-utils';
 
 interface HabitItemProps {
   habit: Habit;
@@ -45,7 +45,7 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
               variant="ghost"
               size="icon"
               onClick={() => onDeleteHabit(habit.id)}
-              aria-label={`Usuń nawyk ${habit.name}`}
+              aria-label={`Delete habit ${habit.name}`}
               className="text-muted-foreground hover:text-destructive"
             >
               <Trash2 className="h-4 w-4" />
@@ -68,18 +68,18 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
               ) : (
                 <Circle className="mr-2 h-5 w-5 text-primary" />
               )}
-              {isCompletedToday ? 'Ukończono dzisiaj!' : 'Oznacz jako ukończony'}
+              {isCompletedToday ? 'Completed today!' : 'Mark as complete'}
             </Button>
           </div>
         </CardContent>
         <CardFooter className="text-xs text-muted-foreground flex justify-between pt-2 pb-4">
           <div className="flex items-center gap-1">
             <Flame className="h-4 w-4 text-orange-500" />
-            <span>Aktualna passa: {habit.currentStreak} {getPolishDayForm(habit.currentStreak)}</span>
+            <span>Current streak: {habit.currentStreak} {getDaySuffix(habit.currentStreak)}</span>
           </div>
           <div className="flex items-center gap-1">
             <Zap className="h-4 w-4 text-yellow-500" />
-            <span>Najdłuższa passa: {habit.longestStreak} {getPolishDayForm(habit.longestStreak)}</span>
+            <span>Longest streak: {habit.longestStreak} {getDaySuffix(habit.longestStreak)}</span>
           </div>
         </CardFooter>
       </Card>

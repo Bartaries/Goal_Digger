@@ -15,7 +15,7 @@ export function HabitList({ habits, onToggleComplete, onDeleteHabit }: HabitList
   if (habits.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-8">
-        <p className="text-lg">Brak nawyków. Dodaj pierwszy, aby zacząć!</p>
+        <p className="text-lg">No habits yet. Add your first one to get started!</p>
       </div>
     );
   }

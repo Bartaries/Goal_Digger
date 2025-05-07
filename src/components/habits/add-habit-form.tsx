@@ -37,37 +37,37 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
           <PlusCircle className="text-primary" />
-          Dodaj nowy nawyk
+          Add new habit
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="flex-grow space-y-1.5">
-            <Label htmlFor="habit-name">Nazwa nawyku</Label>
+            <Label htmlFor="habit-name">Habit name</Label>
             <Input
               id="habit-name"
               type="text"
-              placeholder="np. Czytaj przez 30 minut"
+              placeholder="e.g. Read for 30 minutes"
               value={habitName}
               onChange={(e) => setHabitName(e.target.value)}
-              aria-label="Nazwa nowego nawyku"
+              aria-label="New habit name"
             />
           </div>
           <div className="flex-shrink-0 w-full sm:w-[150px] space-y-1.5">
-            <Label htmlFor="frequency-select">Częstotliwość</Label>
+            <Label htmlFor="frequency-select">Frequency</Label>
             <Select value={frequency} onValueChange={(value) => setFrequency(value as HabitFrequency)}>
               <SelectTrigger id="frequency-select" className="w-full">
-                <SelectValue placeholder="Częstotliwość" />
+                <SelectValue placeholder="Frequency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Codziennie</SelectItem>
-                <SelectItem value="weekly">Tygodniowo</SelectItem>
-                <SelectItem value="monthly">Miesięcznie</SelectItem>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <Button type="submit" variant="default" className="w-full sm:w-auto">
-            <PlusCircle className="mr-2 h-4 w-4" /> Dodaj nawyk
+            <PlusCircle className="mr-2 h-4 w-4" /> Add habit
           </Button>
         </form>
       </CardContent>
