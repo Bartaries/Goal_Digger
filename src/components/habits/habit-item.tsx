@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Habit } from '@/types/habit';
@@ -72,17 +73,24 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
             </Button>
           </div>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground flex justify-between pt-2 pb-4">
-          <div className="flex items-center gap-1">
-            <Flame className="h-4 w-4 text-orange-500" />
-            <span>Aktualny streak: {habit.currentStreak} {getDaySuffix(habit.currentStreak)}</span>
+        <CardFooter className="text-xs text-muted-foreground flex justify-between items-start pt-2 pb-4">
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-1">
+              <Flame className="h-4 w-4 text-orange-500" />
+              <span>Aktualny streak:</span>
+            </div>
+            <span>{habit.currentStreak} {getDaySuffix(habit.currentStreak)}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Zap className="h-4 w-4 text-yellow-500" />
-            <span>Najdłuższy streak: {habit.longestStreak} {getDaySuffix(habit.longestStreak)}</span>
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-1">
+              <Zap className="h-4 w-4 text-yellow-500" />
+              <span>Najdłuższy streak:</span>
+            </div>
+            <span>{habit.longestStreak} {getDaySuffix(habit.longestStreak)}</span>
           </div>
         </CardFooter>
       </Card>
     </motion.div>
   );
 }
+
