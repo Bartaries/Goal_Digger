@@ -55,7 +55,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
             />
           </div>
           <div className="flex-shrink-0 w-full sm:w-[150px] space-y-1.5">
-            <Label htmlFor="frequency-select">Frequency</Label>
+            <Label htmlFor="frequency-select">Częstotliwość</Label>
             <Select value={frequency} onValueChange={(value) => setFrequency(value as HabitFrequency)}>
               <SelectTrigger id="frequency-select" className="w-full">
                 <SelectValue placeholder="Frequency" />
