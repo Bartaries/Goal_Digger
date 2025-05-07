@@ -1,4 +1,3 @@
-
 "use client";
 
 import type { Habit } from '@/types/habit';
@@ -96,4 +95,3 @@ export function ProgressChart({ habits }: ProgressChartProps) {
     </ChartContainer>
   );
 }
-

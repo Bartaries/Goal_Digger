@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -65,7 +66,7 @@ const ChartContainer = React.forwardRef<
     </ChartContext.Provider>
   )
 })
-ChartContainer.displayName = "Chart"
+ChartContainer.displayName = "ChartContainer" // Ensuring displayName matches component name
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
@@ -254,7 +255,7 @@ const ChartTooltipContent = React.forwardRef<
     )
   }
 )
-ChartTooltipContent.displayName = "ChartTooltip"
+ChartTooltipContent.displayName = "ChartTooltipContent" // Changed from "ChartTooltip" for consistency
 
 const ChartLegend = RechartsPrimitive.Legend
 
@@ -314,7 +315,7 @@ const ChartLegendContent = React.forwardRef<
     )
   }
 )
-ChartLegendContent.displayName = "ChartLegend"
+ChartLegendContent.displayName = "ChartLegendContent" // Changed from "ChartLegend"
 
 // Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
