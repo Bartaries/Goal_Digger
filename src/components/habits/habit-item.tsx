@@ -75,11 +75,11 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
         <CardFooter className="text-xs text-muted-foreground flex justify-between pt-2 pb-4">
           <div className="flex items-center gap-1">
             <Flame className="h-4 w-4 text-orange-500" />
-            <span>Current streak: {habit.currentStreak} {getDaySuffix(habit.currentStreak)}</span>
+            <span>Aktualny streak: {habit.currentStreak} {getDaySuffix(habit.currentStreak)}</span>
           </div>
           <div className="flex items-center gap-1">
             <Zap className="h-4 w-4 text-yellow-500" />
-            <span>Longest streak: {habit.longestStreak} {getDaySuffix(habit.longestStreak)}</span>
+            <span>Najdłuższy streak: {habit.longestStreak} {getDaySuffix(habit.longestStreak)}</span>
           </div>
         </CardFooter>
       </Card>
