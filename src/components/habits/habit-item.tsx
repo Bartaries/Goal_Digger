@@ -68,7 +68,7 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
               ) : (
                 <Circle className="mr-2 h-5 w-5 text-primary" />
               )}
-              {isCompletedToday ? 'Completed today!' : 'Mark as complete'}
+              {isCompletedToday ? 'Dziś wykonane!' : 'Oznacz jako wykonane'}
             </Button>
           </div>
         </CardContent>
