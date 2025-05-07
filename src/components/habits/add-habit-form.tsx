@@ -48,7 +48,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
             <Input
               id="habit-name"
               type="text"
-              placeholder="e.g. Read for 30 minutes"
+              placeholder="np. Zrobić peeling twarzy"
               value={habitName}
               onChange={(e) => setHabitName(e.target.value)}
               aria-label="New habit name"
