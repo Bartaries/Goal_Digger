@@ -9,7 +9,7 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart as BarChartIcon, Brain } from 'lucide-react';
+import { LineChart, Brain } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
@@ -197,7 +197,7 @@ export default function HomePage() {
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
-                  <BarChartIcon className="text-primary" />
+                  <LineChart className="text-primary" />
                   Overall Progress
                 </CardTitle>
                 <CardDescription>A quick overview of your habit journey, including completions in the last 7 days.</CardDescription>
