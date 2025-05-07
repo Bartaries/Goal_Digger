@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Goal Digger - Track Your Habits',
-  description: 'Build good habits, break bad ones. Achieve your goals with Goal Digger.',
+  title: 'Goal Digger - Śledź swoje nawyki',
+  description: 'Buduj dobre nawyki, przełamuj złe. Osiągaj swoje cele z Goal Digger.',
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pl" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"

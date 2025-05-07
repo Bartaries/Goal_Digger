@@ -165,9 +165,9 @@ export default function HomePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
               <TrendingUp className="text-primary" />
-              Your Habits
+              Twoje nawyki
             </CardTitle>
-            <CardDescription>Track your daily progress and build lasting habits.</CardDescription>
+            <CardDescription>Śledź swoje codzienne postępy i buduj trwałe nawyki.</CardDescription>
           </CardHeader>
           <CardContent>
             {!isLoaded ? (
@@ -196,16 +196,16 @@ export default function HomePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <BarChartIcon className="text-primary" />
-                  Overall Progress
+                  Ogólny postęp
                 </CardTitle>
-                <CardDescription>A quick glance at your habit journey, including completions in the last 7 days.</CardDescription>
+                <CardDescription>Szybki przegląd Twojej podróży z nawykami, w tym ukończenia w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Total Habits Tracked: {habits.length}</p>
-                <p>Habits Completed Today: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
+                <p>Łącznie śledzonych nawyków: {habits.length}</p>
+                <p>Nawyki ukończone dzisiaj: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
                 
                 <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">Activity Last 7 Days</h3>
+                  <h3 className="text-lg font-semibold mb-2">Aktywność w ciągu ostatnich 7 dni</h3>
                    <ProgressChart habits={habits} />
                 </div>
               </CardContent>

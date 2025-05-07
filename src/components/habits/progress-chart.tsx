@@ -12,12 +12,12 @@ interface ProgressChartProps {
   habits: Habit[];
 }
 
-const chartConfig = {
+const chartConfig: ChartConfig = {
   completions: {
-    label: "Completions", // Tooltip will show "Completions: X"
+    label: "Ukończenia", 
     color: "hsl(var(--primary))", 
   },
-} satisfies ChartConfig;
+};
 
 
 export function ProgressChart({ habits }: ProgressChartProps) {
@@ -43,11 +43,11 @@ export function ProgressChart({ habits }: ProgressChartProps) {
   }, [habits, today]);
 
   if (!habits.length) {
-    return <p className="text-muted-foreground text-center py-4">Add some habits to see your progress!</p>;
+    return <p className="text-muted-foreground text-center py-4">Dodaj nawyki, aby zobaczyć swój postęp!</p>;
   }
   
   if (chartData.every(d => d.completions === 0)) {
-     return <p className="text-muted-foreground text-center py-4">No completions in the last 7 days. Keep going!</p>;
+     return <p className="text-muted-foreground text-center py-4">Brak ukończeń w ciągu ostatnich 7 dni. Kontynuuj!</p>;
   }
 
   const maxYValue = Math.max(5, ...chartData.map(d => d.completions));
@@ -82,7 +82,11 @@ export function ProgressChart({ habits }: ProgressChartProps) {
           <ChartTooltip
             cursor={{ fill: "hsl(var(--muted) / 0.5)", radius: 4 }}
             content={<ChartTooltipContent  
-                        formatter={(value, name) => [`${value} times`, name === 'completions' ? 'Completed (last 7d)' : String(name)]} 
+                        formatter={(value, name) => {
+                          const count = Number(value);
+                          const timesStr = count === 1 ? 'raz' : 'razy';
+                          return [\`${count} ${timesStr}\`, name === 'completions' ? 'Ukończono (ost. 7 dni)' : String(name)];
+                        }}
                         labelClassName="font-semibold"
                     />}
           />
@@ -92,3 +96,4 @@ export function ProgressChart({ habits }: ProgressChartProps) {
     </ChartContainer>
   );
 }
+
