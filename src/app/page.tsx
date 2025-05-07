@@ -9,7 +9,7 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Brain } from 'lucide-react';
+import { LineChart, Brain, Zap } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
@@ -148,6 +148,13 @@ export default function HomePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, /* setHabits should not be a dependency here to avoid loop with its own updates */]);
 
+  const overallLongestStreak = useMemo(() => {
+    if (habits.length === 0) {
+      return 0;
+    }
+    return Math.max(0, ...habits.map(h => h.longestStreak));
+  }, [habits]);
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -203,7 +210,7 @@ export default function HomePage() {
                 <CardDescription>Krótki przegląd Twojej drogi do wyrobienia sobie nawyku, w tym postępów w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 text-center">
                   <div>
                     <p className="text-sm text-muted-foreground">Łączna liczba nawyków</p>
                     <p className="text-2xl font-bold text-primary">{habits.length}</p>
@@ -211,6 +218,12 @@ export default function HomePage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Nawyki ukończone dzisiaj</p>
                     <p className="text-2xl font-bold text-primary">{habits.filter(h => h.completions[getTodayDateString()]).length}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Najdłuższy streak (ogólnie)</p>
+                    <p className="text-2xl font-bold text-primary flex items-center justify-center gap-1">
+                       {overallLongestStreak} <Zap className="h-5 w-5 text-yellow-500"/>
+                    </p>
                   </div>
                 </div>
                 <div>
