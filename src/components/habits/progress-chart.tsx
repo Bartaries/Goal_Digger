@@ -49,17 +49,16 @@ export function ProgressChart({ habits }: ProgressChartProps) {
         if (originalName.length > MOBILE_FIRST_LAST_THRESHOLD) {
           displayName = `${originalName.charAt(0).toUpperCase()}..${originalName.charAt(originalName.length - 1)}`;
         }
-        // If on mobile and name is short (<= MOBILE_FIRST_LAST_THRESHOLD), displayName remains originalName (e.g., "Gym")
-      } else { // Not mobile
+      } else { 
         if (originalName.length > DESKTOP_TRUNCATE_THRESHOLD) {
           displayName = originalName.substring(0, DESKTOP_TRUNCATE_LENGTH) + "...";
         }
-        // If not mobile and name is not > DESKTOP_TRUNCATE_THRESHOLD, displayName remains originalName
       }
       
       return {
-        name: displayName,
+        name: displayName, // For XAxis display
         completions: completionsLast7Days,
+        originalName: originalName, // For tooltip display
       };
     });
   }, [habits, today, isMobile]);
@@ -104,10 +103,16 @@ export function ProgressChart({ habits }: ProgressChartProps) {
           <ChartTooltip
             cursor={{ fill: "hsl(var(--muted) / 0.5)", radius: 4 }}
             content={<ChartTooltipContent
-                        formatter={(value, name) => {
+                        formatter={(value, name, item) => { // item is TooltipPayload, item.payload is our data object
                           const count = Number(value);
                           const timesStr = count === 1 ? 'time' : 'times';
                           return [`${count} ${timesStr}`, name === 'completions' ? 'Completed (last 7 days)' : String(name)];
+                        }}
+                        labelFormatter={(label, payload) => { // label is displayName, payload[0].payload contains originalName
+                          if (payload && payload.length > 0 && payload[0] && payload[0].payload) {
+                            return payload[0].payload.originalName || label;
+                          }
+                          return label;
                         }}
                         labelClassName="font-semibold"
                     />}
