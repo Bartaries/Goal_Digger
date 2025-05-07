@@ -213,9 +213,6 @@ export default function HomePage() {
           </motion.div>
         )}
       </main>
-      <footer className="text-center py-4 border-t text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} Goal Digger. Stay consistent!</p>
-      </footer>
     </div>
   );
 }
