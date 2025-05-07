@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle, PackagePlus } from 'lucide-react';
+import { PlusCircle, Sparkles } from 'lucide-react';
 import type { HabitFrequency } from '@/types/habit';
 
 interface AddHabitFormProps {
@@ -37,7 +37,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
     <Card className="mb-8 shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
-          <PackagePlus className="text-primary" />
+          <Sparkles className="text-primary h-6 w-6" /> {/* Changed icon here */}
           Add new habit
         </CardTitle>
       </CardHeader>
