@@ -6,7 +6,7 @@ import { AddHabitForm } from '@/components/habits/add-habit-form';
 import { HabitList } from '@/components/habits/habit-list';
 import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getTodayDateString, getYesterdayDateString, parseISO, differenceInCalendarDays } from '@/lib/date-utils';
+import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, TrendingUp } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -19,7 +19,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
   const sortedDates = Object.keys(completions)
     .filter(dateStr => completions[dateStr])
-    .map(dateStr => parseISO(dateStr))
+    .map(dateStr => parseISODate(dateStr))
     .sort((a, b) => b.getTime() - a.getTime());
 
   if (sortedDates.length === 0) {
@@ -31,7 +31,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
   let streakEndDate = new Date(); // placeholder
 
   if (lastCompletedDate) {
-    streakEndDate = parseISO(lastCompletedDate);
+    streakEndDate = parseISODate(lastCompletedDate);
     if (differenceInCalendarDays(new Date(), streakEndDate) <= 1) {
       // Potential current streak
       let tempStreak = 0;
@@ -40,14 +40,14 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
         if (differenceInCalendarDays(currentDate, sortedDates[i]) === 0) {
           tempStreak++;
           if (i + 1 < sortedDates.length) {
-             currentDate = parseISO(getYesterdayDateString(sortedDates[i]));
+             currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
           } else {
             // end of sorted dates, break
             break;
           }
         } else if (differenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){
            tempStreak++;
-           currentDate = parseISO(getYesterdayDateString(sortedDates[i]));
+           currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
         }
         else {
           break; 
@@ -129,7 +129,7 @@ export default function HomePage() {
       const { currentStreak, longestStreak, newLastCompletedDate } = calculateStreak(habit.completions, habit.lastCompletedDate);
       // If last completed was yesterday and not marked today, streak breaks unless it was already broken.
       let finalCurrentStreak = currentStreak;
-      if (habit.lastCompletedDate && differenceInCalendarDays(parseISO(todayStr), parseISO(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
+      if (habit.lastCompletedDate && differenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
           finalCurrentStreak = 0;
       }
 

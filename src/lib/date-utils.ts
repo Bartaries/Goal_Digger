@@ -1,4 +1,4 @@
-import { format, parseISO, isToday as fnsIsToday, isYesterday as fnsIsYesterday, subDays, isValid } from 'date-fns';
+import { format, parseISO, isToday as fnsIsToday, isYesterday as fnsIsYesterday, subDays, isValid, differenceInCalendarDays as fnsDifferenceInCalendarDays } from 'date-fns';
 
 export const DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -22,4 +22,12 @@ export const isDateYesterday = (dateString: string): boolean => {
 
 export const getYesterdayDateString = (date: Date = new Date()): string => {
   return getFormattedDate(subDays(date, 1));
+};
+
+export const parseISODate = (dateString: string): Date => {
+  return parseISO(dateString);
+};
+
+export const differenceInCalendarDays = (dateLeft: Date, dateRight: Date): number => {
+  return fnsDifferenceInCalendarDays(dateLeft, dateRight);
 };
