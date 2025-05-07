@@ -167,7 +167,7 @@ export default function HomePage() {
               <span className="flex items-center text-primary">
                 <Brain className="h-6 w-6" />
               </span>
-              Your Habits
+              Twoje nawyki
             </CardTitle>
             <CardDescription>Track your daily progress and build lasting habits.</CardDescription>
           </CardHeader>
