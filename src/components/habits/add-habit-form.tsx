@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { FormEvent } from 'react';
@@ -13,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, PackagePlus } from 'lucide-react';
 import type { HabitFrequency } from '@/types/habit';
 
 interface AddHabitFormProps {
@@ -36,7 +37,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
     <Card className="mb-8 shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
-          <PlusCircle className="text-primary" />
+          <PackagePlus className="text-primary" />
           Add new habit
         </CardTitle>
       </CardHeader>
@@ -74,3 +75,4 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
     </Card>
   );
 }
+
