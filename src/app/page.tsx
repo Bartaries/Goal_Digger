@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Habit } from '@/types/habit';
 import { AddHabitForm } from '@/components/habits/add-habit-form';
 import { HabitList } from '@/components/habits/habit-list';
@@ -80,7 +80,8 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
 
 export default function HomePage() {
-  const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', []);
+  const initialHabits = useMemo(() => [], []);
+  const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
 
   const addHabit = (name: string) => {
     const newHabit: Habit = {

@@ -15,21 +15,28 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T
       }
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
-      // Fallback to initialValue if error
-      setStoredValue(initialValue);
+      // Fallback to initialValue if error during parse or if item is not found,
+      // as useState already initialized with initialValue.
     }
     setIsLoaded(true);
   }, [key, initialValue]);
 
-  const setValue: SetValue<T> = useCallback((value) => {
-    try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error);
-    }
-  }, [key, storedValue]);
+  const setValue: SetValue<T> = useCallback(
+    (value) => {
+      try {
+        // Use a functional update for `setStoredValue` to ensure it has the latest state
+        // if `value` is a state updater function.
+        setStoredValue((prevStoredValue) => {
+          const valueToStore = value instanceof Function ? value(prevStoredValue) : value;
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          return valueToStore;
+        });
+      } catch (error) {
+        console.error(`Error setting localStorage key "${key}":`, error);
+      }
+    },
+    [key] // Dependency only on `key` ensures `setValue` is stable for a given key.
+  );
 
   return [storedValue, setValue, isLoaded];
 }
