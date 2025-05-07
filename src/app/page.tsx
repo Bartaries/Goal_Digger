@@ -7,9 +7,9 @@ import { AddHabitForm } from '@/components/habits/add-habit-form';
 import { HabitList } from '@/components/habits/habit-list';
 import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
+import { getTodayDateString, getYesterdayDateString, parseISODate as parseISO, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart as BarChartIcon, TrendingUp } from 'lucide-react';
+import { BarChart as BarChartIcon, Brain, Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
@@ -21,7 +21,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
   const sortedDates = Object.keys(completions)
     .filter(dateStr => completions[dateStr])
-    .map(dateStr => parseISODate(dateStr))
+    .map(dateStr => parseISO(dateStr))
     .sort((a, b) => b.getTime() - a.getTime());
 
   if (sortedDates.length === 0) {
@@ -33,7 +33,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
   let streakEndDate = new Date(); // placeholder
 
   if (lastCompletedDate) {
-    streakEndDate = parseISODate(lastCompletedDate);
+    streakEndDate = parseISO(lastCompletedDate);
     if (fnsDifferenceInCalendarDays(new Date(), streakEndDate) <= 1) {
       // Potential current streak
       let tempStreak = 0;
@@ -42,14 +42,14 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
         if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 0) {
           tempStreak++;
           if (i + 1 < sortedDates.length) {
-             currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
+             currentDate = parseISO(getYesterdayDateString(sortedDates[i]));
           } else {
             // end of sorted dates, break
             break;
           }
         } else if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){
            tempStreak++;
-           currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
+           currentDate = parseISO(getYesterdayDateString(sortedDates[i]));
         }
         else {
           break; 
@@ -134,7 +134,7 @@ export default function HomePage() {
       const { currentStreak, longestStreak } = calculateStreak(habit.completions, habit.lastCompletedDate);
       // If last completed was yesterday and not marked today, streak breaks unless it was already broken.
       let finalCurrentStreak = currentStreak;
-      if (habit.lastCompletedDate && fnsDifferenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
+      if (habit.lastCompletedDate && fnsDifferenceInCalendarDays(parseISO(todayStr), parseISO(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
           finalCurrentStreak = 0;
       }
 
@@ -164,7 +164,10 @@ export default function HomePage() {
         <Card className="shadow-lg mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
-              <TrendingUp className="text-primary" />
+              <span className="flex items-center text-primary">
+                <Brain className="h-6 w-6" />
+                <Sparkles className="h-5 w-5 ml-1" />
+              </span>
               Your Habits
             </CardTitle>
             <CardDescription>Track your daily progress and build lasting habits.</CardDescription>
@@ -216,3 +219,4 @@ export default function HomePage() {
     </div>
   );
 }
+
