@@ -44,7 +44,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="flex-grow space-y-1.5">
-            <Label htmlFor="habit-name">Habit name</Label>
+            <Label htmlFor="habit-name">Nazwa nawyku</Label>
             <Input
               id="habit-name"
               type="text"
