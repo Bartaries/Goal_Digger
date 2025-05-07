@@ -3,8 +3,9 @@
 import type { Habit } from '@/types/habit';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Circle, Flame, Trash2, Zap } from 'lucide-react';
-import { getTodayDateString, isDateYesterday } from '@/lib/date-utils';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle, Circle, Flame, Trash2, Zap, Repeat } from 'lucide-react';
+import { getTodayDateString } from '@/lib/date-utils';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -22,6 +23,8 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
     onToggleComplete(habit.id, todayString);
   };
 
+  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,7 +35,13 @@ export function HabitItem({ habit, onToggleComplete, onDeleteHabit }: HabitItemP
       <Card className="mb-4 shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
-            <CardTitle className="text-lg font-semibold">{habit.name}</CardTitle>
+            <div>
+              <CardTitle className="text-lg font-semibold">{habit.name}</CardTitle>
+              <Badge variant="secondary" className="mt-1">
+                <Repeat className="mr-1 h-3 w-3" />
+                {capitalize(habit.frequency)}
+              </Badge>
+            </div>
             <Button
               variant="ghost"
               size="icon"

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import type { Habit } from '@/types/habit';
+import type { Habit, HabitFrequency } from '@/types/habit';
 import { AddHabitForm } from '@/components/habits/add-habit-form';
 import { HabitList } from '@/components/habits/habit-list';
 import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays } from '@/lib/date-utils';
+import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils'; // Renamed import
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, TrendingUp } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,12 +32,12 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
   if (lastCompletedDate) {
     streakEndDate = parseISODate(lastCompletedDate);
-    if (differenceInCalendarDays(new Date(), streakEndDate) <= 1) {
+    if (fnsDifferenceInCalendarDays(new Date(), streakEndDate) <= 1) { // Used renamed import
       // Potential current streak
       let tempStreak = 0;
       let currentDate = streakEndDate;
       for (let i = 0; i < sortedDates.length; i++) {
-        if (differenceInCalendarDays(currentDate, sortedDates[i]) === 0) {
+        if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 0) { // Used renamed import
           tempStreak++;
           if (i + 1 < sortedDates.length) {
              currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
@@ -45,7 +45,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
             // end of sorted dates, break
             break;
           }
-        } else if (differenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){
+        } else if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){ // Used renamed import
            tempStreak++;
            currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
         }
@@ -63,7 +63,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
     let currentLongest = 1;
     let maxLongest = 1;
     for (let i = 0; i < sortedDates.length - 1; i++) {
-      if (differenceInCalendarDays(sortedDates[i], sortedDates[i+1]) === 1) {
+      if (fnsDifferenceInCalendarDays(sortedDates[i], sortedDates[i+1]) === 1) { // Used renamed import
         currentLongest++;
       } else {
         maxLongest = Math.max(maxLongest, currentLongest);
@@ -83,10 +83,11 @@ export default function HomePage() {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
 
-  const addHabit = (name: string) => {
+  const addHabit = (name: string, frequency: HabitFrequency) => {
     const newHabit: Habit = {
       id: crypto.randomUUID(),
       name,
+      frequency,
       createdAt: new Date().toISOString(),
       completions: {},
       currentStreak: 0,
@@ -127,10 +128,11 @@ export default function HomePage() {
 
     const todayStr = getTodayDateString();
     setHabits(prevHabits => prevHabits.map(habit => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { currentStreak, longestStreak, newLastCompletedDate } = calculateStreak(habit.completions, habit.lastCompletedDate);
       // If last completed was yesterday and not marked today, streak breaks unless it was already broken.
       let finalCurrentStreak = currentStreak;
-      if (habit.lastCompletedDate && differenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
+      if (habit.lastCompletedDate && fnsDifferenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) { // Used renamed import
           finalCurrentStreak = 0;
       }
 

@@ -1,6 +1,9 @@
+export type HabitFrequency = 'daily' | 'weekly' | 'monthly';
+
 export interface Habit {
   id: string;
   name: string;
+  frequency: HabitFrequency;
   createdAt: string; // ISO date string
   // Record of completion dates, key: 'yyyy-MM-dd', value: true
   completions: Record<string, boolean>;
