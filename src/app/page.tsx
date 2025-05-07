@@ -205,7 +205,7 @@ export default function HomePage() {
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-center">
                   <div>
-                    <p className="text-sm text-muted-foreground">Łączna liczba śledzonych nawyków</p>
+                    <p className="text-sm text-muted-foreground">Łączna liczba nawyków</p>
                     <p className="text-2xl font-bold">{habits.length}</p>
                   </div>
                   <div>
