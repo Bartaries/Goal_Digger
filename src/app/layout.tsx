@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Habitual - Track Your Habits',
-  description: 'Build good habits, break bad ones. Achieve your goals with Habitual.',
+  title: 'Goal Digger - Track Your Habits',
+  description: 'Build good habits, break bad ones. Achieve your goals with Goal Digger.',
 };
 
 export default function RootLayout({
