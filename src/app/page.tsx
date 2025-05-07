@@ -9,9 +9,9 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Brain, Sparkles } from 'lucide-react';
+import { LineChart, Brain } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
 
 const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate?: string): { currentStreak: number; longestStreak: number; newLastCompletedDate?: string } => {
@@ -203,11 +203,11 @@ export default function HomePage() {
                 <CardDescription>Krótki przegląd Twojej drogi do wyrobienia sobie nawyku, w tym postępów w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Total habits tracked: {habits.length}</p>
-                <p>Habits completed today: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
+                <p>Łączna liczba śledzonych nawyków: {habits.length}</p>
+                <p>Nawyki ukończone dzisiaj: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
                 
                 <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">Activity in the last 7 days</h3>
+                  <h3 className="text-lg font-semibold mb-2">Aktywność w ostatnich 7 dniach</h3>
                    <ProgressChart habits={habits} />
                 </div>
               </CardContent>
@@ -218,3 +218,4 @@ export default function HomePage() {
     </div>
   );
 }
+
