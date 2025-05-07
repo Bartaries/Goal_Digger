@@ -6,7 +6,7 @@ export function AppHeader() {
     <header className="border-b">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Shovel className="h-8 w-8 text-primary" />
+          <Shovel className="h-8 w-8 text-primary -rotate-90" />
           <h1 className="text-2xl font-bold text-primary">Goal Digger</h1>
         </div>
         <ModeToggle />
