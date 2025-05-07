@@ -203,13 +203,7 @@ export default function HomePage() {
                 <CardDescription>Krótki przegląd Twojej drogi do wyrobienia sobie nawyku, w tym postępów w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Łączna liczba śledzonych nawyków: {habits.length}</p>
-                <p>Nawyki ukończone dzisiaj: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
-                
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">Aktywność w ostatnich 7 dniach</h3>
-                   <ProgressChart habits={habits} />
-                </div>
+                Łączna liczba nawyków
               </CardContent>
             </Card>
           </motion.div>
