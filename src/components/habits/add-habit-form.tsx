@@ -38,7 +38,7 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
           <Sparkles className="text-primary h-6 w-6" /> {/* Changed icon here */}
-          Add new habit
+          Nowe nawyki
         </CardTitle>
       </CardHeader>
       <CardContent>
