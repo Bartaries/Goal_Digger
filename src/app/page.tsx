@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
@@ -6,11 +7,12 @@ import { AddHabitForm } from '@/components/habits/add-habit-form';
 import { HabitList } from '@/components/habits/habit-list';
 import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils'; // Renamed import
+import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, TrendingUp } from 'lucide-react';
+import { BarChart as BarChartIcon, TrendingUp } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ProgressChart } from '@/components/habits/progress-chart';
 
 const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate?: string): { currentStreak: number; longestStreak: number; newLastCompletedDate?: string } => {
   if (!Object.keys(completions).length) {
@@ -32,12 +34,12 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
   if (lastCompletedDate) {
     streakEndDate = parseISODate(lastCompletedDate);
-    if (fnsDifferenceInCalendarDays(new Date(), streakEndDate) <= 1) { // Used renamed import
+    if (differenceInCalendarDays(new Date(), streakEndDate) <= 1) {
       // Potential current streak
       let tempStreak = 0;
       let currentDate = streakEndDate;
       for (let i = 0; i < sortedDates.length; i++) {
-        if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 0) { // Used renamed import
+        if (differenceInCalendarDays(currentDate, sortedDates[i]) === 0) {
           tempStreak++;
           if (i + 1 < sortedDates.length) {
              currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
@@ -45,7 +47,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
             // end of sorted dates, break
             break;
           }
-        } else if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){ // Used renamed import
+        } else if (differenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){
            tempStreak++;
            currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
         }
@@ -63,7 +65,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
     let currentLongest = 1;
     let maxLongest = 1;
     for (let i = 0; i < sortedDates.length - 1; i++) {
-      if (fnsDifferenceInCalendarDays(sortedDates[i], sortedDates[i+1]) === 1) { // Used renamed import
+      if (differenceInCalendarDays(sortedDates[i], sortedDates[i+1]) === 1) {
         currentLongest++;
       } else {
         maxLongest = Math.max(maxLongest, currentLongest);
@@ -103,7 +105,7 @@ export default function HomePage() {
           const newCompletions = { ...habit.completions };
           newCompletions[date] = !newCompletions[date];
           
-          const { currentStreak, longestStreak, newLastCompletedDate } = calculateStreak(newCompletions, newCompletions[date] ? date : habit.lastCompletedDate);
+          const { currentStreak, longestStreak } = calculateStreak(newCompletions, newCompletions[date] ? date : habit.lastCompletedDate);
 
           return {
             ...habit,
@@ -129,10 +131,10 @@ export default function HomePage() {
     const todayStr = getTodayDateString();
     setHabits(prevHabits => prevHabits.map(habit => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { currentStreak, longestStreak, newLastCompletedDate } = calculateStreak(habit.completions, habit.lastCompletedDate);
+      const { currentStreak, longestStreak } = calculateStreak(habit.completions, habit.lastCompletedDate);
       // If last completed was yesterday and not marked today, streak breaks unless it was already broken.
       let finalCurrentStreak = currentStreak;
-      if (habit.lastCompletedDate && fnsDifferenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) { // Used renamed import
+      if (habit.lastCompletedDate && differenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
           finalCurrentStreak = 0;
       }
 
@@ -143,7 +145,8 @@ export default function HomePage() {
         // lastCompletedDate is updated by toggleHabitCompletion
       };
     }));
-  }, [isLoaded, setHabits]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, /* setHabits should not be a dependency here to avoid loop with its own updates */]);
 
 
   return (
@@ -192,15 +195,19 @@ export default function HomePage() {
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
-                  <BarChart className="text-primary" />
+                  <BarChartIcon className="text-primary" />
                   Overall Progress
                 </CardTitle>
-                <CardDescription>A quick glance at your habit journey.</CardDescription>
+                <CardDescription>A quick glance at your habit journey, including completions in the last 7 days.</CardDescription>
               </CardHeader>
               <CardContent>
                 <p>Total Habits Tracked: {habits.length}</p>
                 <p>Habits Completed Today: {habits.filter(h => h.completions[getTodayDateString()]).length}</p>
-                {/* More stats can be added here later */}
+                
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-2">Activity Last 7 Days</h3>
+                   <ProgressChart habits={habits} />
+                </div>
               </CardContent>
             </Card>
           </motion.div>
