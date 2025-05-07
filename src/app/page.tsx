@@ -200,7 +200,7 @@ export default function HomePage() {
                   <LineChart className="text-primary" />
                   Overall Progress
                 </CardTitle>
-                <CardDescription>A quick overview of your habit journey, including completions in the last 7 days.</CardDescription>
+                <CardDescription>Krótki przegląd Twojej drogi do wyrobienia sobie nawyku, w tym postępów w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
               <CardContent>
                 <p>Total habits tracked: {habits.length}</p>
