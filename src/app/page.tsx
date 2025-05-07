@@ -169,7 +169,7 @@ export default function HomePage() {
               </span>
               Twoje nawyki
             </CardTitle>
-            <CardDescription>Track your daily progress and build lasting habits.</CardDescription>
+            <CardDescription>Śledź swoje codzienne postępy i buduj trwałe nawyki.</CardDescription>
           </CardHeader>
           <CardContent>
             {!isLoaded ? (
