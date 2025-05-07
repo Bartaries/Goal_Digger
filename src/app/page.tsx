@@ -9,7 +9,7 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Brain } from 'lucide-react';
+import { LineChart, Brain, Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
@@ -198,7 +198,7 @@ export default function HomePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <LineChart className="text-primary" />
-                  Overall Progress
+                  Ogólny postęp
                 </CardTitle>
                 <CardDescription>Krótki przegląd Twojej drogi do wyrobienia sobie nawyku, w tym postępów w ciągu ostatnich 7 dni.</CardDescription>
               </CardHeader>
@@ -218,4 +218,3 @@ export default function HomePage() {
     </div>
   );
 }
-
