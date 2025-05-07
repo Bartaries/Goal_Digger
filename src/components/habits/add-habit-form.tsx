@@ -58,12 +58,12 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
             <Label htmlFor="frequency-select">Częstotliwość</Label>
             <Select value={frequency} onValueChange={(value) => setFrequency(value as HabitFrequency)}>
               <SelectTrigger id="frequency-select" className="w-full">
-                <SelectValue placeholder="Frequency" />
+                <SelectValue placeholder="Częstotliwość" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="daily">Codziennie</SelectItem>
+                <SelectItem value="weekly">Co tydzień</SelectItem>
+                <SelectItem value="monthly">Co miesiąc</SelectItem>
               </SelectContent>
             </Select>
           </div>
