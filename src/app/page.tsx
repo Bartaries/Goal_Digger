@@ -206,11 +206,11 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-center">
                   <div>
                     <p className="text-sm text-muted-foreground">Łączna liczba nawyków</p>
-                    <p className="text-2xl font-bold">{habits.length}</p>
+                    <p className="text-2xl font-bold text-primary">{habits.length}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Nawyki ukończone dzisiaj</p>
-                    <p className="text-2xl font-bold">{habits.filter(h => h.completions[getTodayDateString()]).length}</p>
+                    <p className="text-2xl font-bold text-primary">{habits.filter(h => h.completions[getTodayDateString()]).length}</p>
                   </div>
                 </div>
                 <div>
