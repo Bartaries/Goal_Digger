@@ -9,14 +9,14 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Brain, Zap } from 'lucide-react';
+import { LineChart, Brain, Zap, Sparkles } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
 import { suggestHabit } from '@/ai/flows/habit-suggestion-flow';
 import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { LoginForm } from '@/components/auth/login-form';
 
 const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate?: string): { currentStreak: number; longestStreak: number; newLastCompletedDate?: string } => {
   if (!Object.keys(completions).length) {
@@ -85,7 +85,29 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 };
 
 
-export default function HomePage() {
+export default function AppEntryPoint() {
+  const [isAuthenticated, setIsAuthenticated, isAuthLoaded] = useLocalStorage<boolean>('isAuthenticated', false);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Brain className="h-16 w-16 text-primary animate-pulse" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <LoginForm onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  return <HomePageContent />;
+}
+
+function HomePageContent() {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -152,7 +174,7 @@ export default function HomePage() {
       };
     }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, /* setHabits should not be a dependency here to avoid loop with its own updates */]);
+  }, [isLoaded]);
 
   const overallLongestStreak = useMemo(() => {
     if (habits.length === 0) {
@@ -284,4 +306,3 @@ export default function HomePage() {
     </div>
   );
 }
-
