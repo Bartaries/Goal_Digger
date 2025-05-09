@@ -64,11 +64,11 @@ export function ProgressChart({ habits }: ProgressChartProps) {
   }, [habits, today, isMobile]);
 
   if (!habits.length) {
-    return <p className="text-muted-foreground text-center py-4">Add habits to see your progress!</p>;
+    return <p className="text-muted-foreground text-center py-4">Dodaj nawyk aby widzieć swój progres.</p>;
   }
   
   if (chartData.every(d => d.completions === 0)) {
-     return <p className="text-muted-foreground text-center py-4">No completions in the last 7 days. Keep going!</p>;
+     return <p className="text-muted-foreground text-center py-4">Brak wykonanych nawyków w ostatnich 7 dniach. Nie poddawaj się!</p>;
   }
 
   const maxYValue = Math.max(5, ...chartData.map(d => d.completions));
