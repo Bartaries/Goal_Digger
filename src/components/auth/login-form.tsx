@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LogIn } from 'lucide-react';
 
 interface LoginFormProps {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (username: string) => void;
 }
 
 export function LoginForm({ onLoginSuccess }: LoginFormProps) {
@@ -20,7 +20,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     e.preventDefault();
     // Simple mock login: any non-empty username/password works, or even empty for this simplicity.
     // In a real app, you'd validate credentials here.
-    onLoginSuccess();
+    onLoginSuccess(username || "Użytkownik"); // Pass the entered username, or a default if empty
   };
 
   return (

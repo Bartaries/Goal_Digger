@@ -84,13 +84,13 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 
 
 export default function AppEntryPoint() {
-  const [isAuthenticated, setIsAuthenticated, isAuthLoaded] = useLocalStorage<boolean>('isAuthenticated', false);
+  const [loggedInUser, setLoggedInUser, isUserLoaded] = useLocalStorage<string | null>('loggedInUser', null);
 
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
+  const handleLoginSuccess = (username: string) => {
+    setLoggedInUser(username);
   };
 
-  if (!isAuthLoaded) {
+  if (!isUserLoaded) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Brain className="h-16 w-16 text-primary animate-pulse" />
@@ -98,14 +98,18 @@ export default function AppEntryPoint() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!loggedInUser) {
     return <LoginForm onLoginSuccess={handleLoginSuccess} />;
   }
 
-  return <HomePageContent />;
+  return <HomePageContent username={loggedInUser} />;
 }
 
-function HomePageContent() {
+interface HomePageContentProps {
+  username: string;
+}
+
+function HomePageContent({ username }: HomePageContentProps) {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
 
@@ -183,7 +187,7 @@ function HomePageContent() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <AppHeader />
+      <AppHeader username={username} />
       <main className="flex-grow container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
