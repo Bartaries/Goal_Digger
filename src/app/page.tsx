@@ -13,6 +13,10 @@ import { LineChart, Brain, Zap } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
+import { suggestHabit } from '@/ai/flows/habit-suggestion-flow';
+import { Button } from '@/components/ui/button';
+import { Sparkles } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate?: string): { currentStreak: number; longestStreak: number; newLastCompletedDate?: string } => {
   if (!Object.keys(completions).length) {
@@ -30,12 +34,12 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
   
   let currentStreak = 0;
   let longestStreak = 0;
-  let streakEndDate = new Date(); // placeholder
+  let streakEndDate = new Date(); 
 
   if (lastCompletedDate) {
     streakEndDate = parseISODate(lastCompletedDate);
     if (fnsDifferenceInCalendarDays(new Date(), streakEndDate) <= 1) {
-      // Potential current streak
+      
       let tempStreak = 0;
       let currentDate = streakEndDate;
       for (let i = 0; i < sortedDates.length; i++) {
@@ -44,7 +48,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
           if (i + 1 < sortedDates.length) {
              currentDate = parseISODate(getYesterdayDateString(sortedDates[i]));
           } else {
-            // end of sorted dates, break
+            
             break;
           }
         } else if (fnsDifferenceInCalendarDays(currentDate, sortedDates[i]) === 1 && completions[getYesterdayDateString(currentDate)]){
@@ -60,7 +64,7 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
   }
 
 
-  // Calculate longest streak
+  
   if (sortedDates.length > 0) {
     let currentLongest = 1;
     let maxLongest = 1;
@@ -84,6 +88,8 @@ const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate
 export default function HomePage() {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const { toast } = useToast();
 
   const addHabit = (name: string, frequency: HabitFrequency) => {
     const newHabit: Habit = {
@@ -124,7 +130,7 @@ export default function HomePage() {
     setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== habitId));
   };
   
-  // Recalculate streaks on load and when today changes (e.g. past midnight)
+  
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -132,7 +138,7 @@ export default function HomePage() {
     setHabits(prevHabits => prevHabits.map(habit => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { currentStreak, longestStreak } = calculateStreak(habit.completions, habit.lastCompletedDate);
-      // If last completed was yesterday and not marked today, streak breaks unless it was already broken.
+      
       let finalCurrentStreak = currentStreak;
       if (habit.lastCompletedDate && fnsDifferenceInCalendarDays(parseISODate(todayStr), parseISODate(habit.lastCompletedDate)) > 1 && !habit.completions[todayStr]) {
           finalCurrentStreak = 0;
@@ -142,7 +148,7 @@ export default function HomePage() {
         ...habit,
         currentStreak: finalCurrentStreak,
         longestStreak: Math.max(habit.longestStreak, longestStreak, finalCurrentStreak),
-        // lastCompletedDate is updated by toggleHabitCompletion
+        
       };
     }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,6 +161,36 @@ export default function HomePage() {
     return Math.max(0, ...habits.map(h => h.longestStreak));
   }, [habits]);
 
+  const handleSuggestHabit = async () => {
+    setIsSuggesting(true);
+    try {
+      const existingHabitNames = habits.map(h => h.name);
+      const suggestion = await suggestHabit({ existingHabits: existingHabitNames, language: "Polish" });
+      if (suggestion && suggestion.name) {
+        addHabit(suggestion.name, suggestion.frequency || 'daily');
+        toast({
+          title: "Sugerowany nawyk dodany!",
+          description: `"${suggestion.name}" został dodany do Twojej listy.`,
+        });
+      } else {
+        toast({
+          title: "Nie udało się zasugerować nawyku",
+          description: "Spróbuj ponownie później.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error suggesting habit:", error);
+      toast({
+        title: "Błąd",
+        description: "Wystąpił błąd podczas sugerowania nawyku.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSuggesting(false);
+    }
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -164,8 +200,18 @@ export default function HomePage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="mb-8"
         >
           <AddHabitForm onAddHabit={addHabit} />
+          <Button 
+            onClick={handleSuggestHabit} 
+            disabled={isSuggesting}
+            variant="outline"
+            className="w-full mt-4"
+          >
+            <Sparkles className="mr-2 h-4 w-4" />
+            {isSuggesting ? 'Sugerowanie...' : 'Zasugeruj mi nawyk'}
+          </Button>
         </motion.div>
 
         <Card className="shadow-lg mb-8">

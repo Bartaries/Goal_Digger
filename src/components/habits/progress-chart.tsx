@@ -32,7 +32,7 @@ export function ProgressChart({ habits }: ProgressChartProps) {
         if (habit.completions[dateStr]) {
           const completionDate = parseISODate(dateStr);
           const diff = differenceInCalendarDays(today, completionDate);
-          if (diff >= 0 && diff < 7) { // 0 for today, up to 6 for 6 days ago
+          if (diff >= 0 && diff < 7) { 
             completionsLast7Days++;
           }
         }
@@ -43,7 +43,7 @@ export function ProgressChart({ habits }: ProgressChartProps) {
 
       const DESKTOP_TRUNCATE_THRESHOLD = 20;
       const DESKTOP_TRUNCATE_LENGTH = 17;
-      const MOBILE_FIRST_LAST_THRESHOLD = 4; // If name length is greater than this on mobile, format as F..L
+      const MOBILE_FIRST_LAST_THRESHOLD = 4; 
 
       if (isMobile) {
         if (originalName.length > MOBILE_FIRST_LAST_THRESHOLD) {
@@ -56,9 +56,9 @@ export function ProgressChart({ habits }: ProgressChartProps) {
       }
       
       return {
-        name: displayName, // For XAxis display
+        name: displayName, 
         completions: completionsLast7Days,
-        originalName: originalName, // For tooltip display
+        originalName: originalName, 
       };
     });
   }, [habits, today, isMobile]);
@@ -103,12 +103,12 @@ export function ProgressChart({ habits }: ProgressChartProps) {
           <ChartTooltip
             cursor={{ fill: "hsl(var(--muted) / 0.5)", radius: 4 }}
             content={<ChartTooltipContent
-                        formatter={(value, name, item) => { // item is TooltipPayload, item.payload is our data object
+                        formatter={(value, name, item) => { 
                           const count = Number(value);
                           const timesStr = count === 1 ? 'time' : 'times';
                           return [`${count} ${timesStr}`, name === 'completions' ? 'Completed (last 7 days)' : String(name)];
                         }}
-                        labelFormatter={(label, payload) => { // label is displayName, payload[0].payload contains originalName
+                        labelFormatter={(label, payload) => { 
                           if (payload && payload.length > 0 && payload[0] && payload[0].payload) {
                             return payload[0].payload.originalName || label;
                           }

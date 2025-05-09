@@ -30,14 +30,14 @@ export function AddHabitForm({ onAddHabit }: AddHabitFormProps) {
     if (habitName.trim() === '') return;
     onAddHabit(habitName.trim(), frequency);
     setHabitName('');
-    setFrequency('daily'); // Reset frequency to default
+    setFrequency('daily'); 
   };
 
   return (
-    <Card className="mb-8 shadow-lg">
+    <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
-          <Sparkles className="text-primary h-6 w-6" /> {/* Changed icon here */}
+          <Sparkles className="text-primary h-6 w-6" /> 
           Nowe nawyki
         </CardTitle>
       </CardHeader>

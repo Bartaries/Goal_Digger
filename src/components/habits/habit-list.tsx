@@ -21,7 +21,7 @@ export function HabitList({ habits, onToggleComplete, onDeleteHabit }: HabitList
   }
 
   return (
-    <ScrollArea className="h-[calc(100vh-280px)] pr-4"> {/* Adjust height as needed */}
+    <ScrollArea className="h-[calc(100vh-280px)] pr-4"> 
       <AnimatePresence>
         {habits.map((habit) => (
           <HabitItem
