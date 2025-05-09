@@ -9,14 +9,12 @@ import { AppHeader } from '@/components/layout/app-header';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { getTodayDateString, getYesterdayDateString, parseISODate, differenceInCalendarDays as fnsDifferenceInCalendarDays } from '@/lib/date-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Brain, Zap, Sparkles } from 'lucide-react';
+import { LineChart, Brain, Zap } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { ProgressChart } from '@/components/habits/progress-chart';
-import { suggestHabit } from '@/ai/flows/habit-suggestion-flow';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { LoginForm } from '@/components/auth/login-form';
+
 
 const calculateStreak = (completions: Record<string, boolean>, lastCompletedDate?: string): { currentStreak: number; longestStreak: number; newLastCompletedDate?: string } => {
   if (!Object.keys(completions).length) {
@@ -110,8 +108,7 @@ export default function AppEntryPoint() {
 function HomePageContent() {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
-  const [isSuggesting, setIsSuggesting] = useState(false);
-  const { toast } = useToast();
+
 
   const addHabit = (name: string, frequency: HabitFrequency) => {
     const newHabit: Habit = {
@@ -183,36 +180,6 @@ function HomePageContent() {
     return Math.max(0, ...habits.map(h => h.longestStreak));
   }, [habits]);
 
-  const handleSuggestHabit = async () => {
-    setIsSuggesting(true);
-    try {
-      const existingHabitNames = habits.map(h => h.name);
-      const suggestion = await suggestHabit({ existingHabits: existingHabitNames, language: "Polish" });
-      if (suggestion && suggestion.name) {
-        addHabit(suggestion.name, suggestion.frequency || 'daily');
-        toast({
-          title: "Sugerowany nawyk dodany!",
-          description: `"${suggestion.name}" został dodany do Twojej listy.`,
-        });
-      } else {
-        toast({
-          title: "Nie udało się zasugerować nawyku",
-          description: "Spróbuj ponownie później.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error suggesting habit:", error);
-      toast({
-        title: "Błąd",
-        description: "Wystąpił błąd podczas sugerowania nawyku.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSuggesting(false);
-    }
-  };
-
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -225,15 +192,6 @@ function HomePageContent() {
           className="mb-8"
         >
           <AddHabitForm onAddHabit={addHabit} />
-          <Button 
-            onClick={handleSuggestHabit} 
-            disabled={isSuggesting}
-            variant="outline"
-            className="w-full mt-4"
-          >
-            <Sparkles className="mr-2 h-4 w-4" />
-            {isSuggesting ? 'Sugerowanie...' : 'Zasugeruj mi nawyk'}
-          </Button>
         </motion.div>
 
         <Card className="shadow-lg mb-8">
@@ -306,3 +264,4 @@ function HomePageContent() {
     </div>
   );
 }
+
