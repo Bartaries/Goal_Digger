@@ -18,9 +18,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simple mock login: any non-empty username/password works, or even empty for this simplicity.
-    // In a real app, you'd validate credentials here.
-    onLoginSuccess(username || "Użytkownik"); // Pass the entered username, or a default if empty
+    onLoginSuccess(username || "Użytkownik");
   };
 
   return (

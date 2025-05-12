@@ -90,6 +90,10 @@ export default function AppEntryPoint() {
     setLoggedInUser(username);
   };
 
+  const handleLogout = () => {
+    setLoggedInUser(null);
+  };
+
   if (!isUserLoaded) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -102,14 +106,15 @@ export default function AppEntryPoint() {
     return <LoginForm onLoginSuccess={handleLoginSuccess} />;
   }
 
-  return <HomePageContent username={loggedInUser} />;
+  return <HomePageContent username={loggedInUser} onLogout={handleLogout} />;
 }
 
 interface HomePageContentProps {
   username: string;
+  onLogout: () => void;
 }
 
-function HomePageContent({ username }: HomePageContentProps) {
+function HomePageContent({ username, onLogout }: HomePageContentProps) {
   const initialHabits = useMemo(() => [], []);
   const [habits, setHabits, isLoaded] = useLocalStorage<Habit[]>('habits', initialHabits);
 
@@ -187,7 +192,7 @@ function HomePageContent({ username }: HomePageContentProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <AppHeader username={username} />
+      <AppHeader username={username} onLogout={onLogout} />
       <main className="flex-grow container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
