@@ -16,7 +16,7 @@ export function AppHeader({ username, onLogout }: AppHeaderProps) {
           <h1 className="text-2xl font-bold text-primary">Goal Digger</h1>
         </div>
         <div className="flex items-center gap-2">
-          {username && <span className="text-sm text-muted-foreground">Witaj, {username}!</span>}
+          {username && <span className="text-sm text-muted-foreground">Hej, {username}!</span>}
           <ModeToggle />
           {onLogout && (
             <Button variant="outline" size="icon" onClick={onLogout} aria-label="Wyloguj">
